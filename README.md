@@ -47,6 +47,7 @@ Summarizr is built on:
 - Whisper.cpp
 - Ollama
 - ffmpeg
+- Python 3.10
 
 ### Install Dependencies
 
