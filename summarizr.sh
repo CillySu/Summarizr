@@ -25,11 +25,11 @@ echo -e "$(ollama list)"
 echo -e "==> Above are the models that you have installed. Use --model [model]\n"
 
 echo -e "\n${BF}${BL}*** PROMPTS ***${RS}"
-echo -e "$(ls $script_dir/prompts)"
+echo -e "$(ls -laG $script_dir/prompts)"
 echo -e "==> Above are the prompts that you have installed. Use --prompt [prompt] (do not include the .txt)\n"
 
 echo -e "\n${BF}${BL}*** WHISPER MODELS***${RS}"
-echo -e "$(ls -l $whisper_dir/models)"
+echo -e "$(ls -laG $whisper_dir/models | grep '*.bin')"
 
 # Parse remaining command-line options
 url_or_file="$1"
@@ -37,7 +37,7 @@ shift
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --prompt)
-            prompt_file="./prompts/$2.txt"
+            prompt_file="$script_dir/$2.txt"
             if [[ -f "$prompt_file" ]]; then
                 prompt=$(<"$prompt_file")
             else
