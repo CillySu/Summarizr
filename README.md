@@ -4,7 +4,7 @@
   <img src="https://i.imgur.com/lQZlmVY.png" alt="Summarizr Logo" width="350"/>
 </div>
 
-> A bash script (currently written for MacOS) that uses `Whisper.cpp` and `Ollama` to summarize or manipulate videos. Built on `yt-dlp`, it works across a wide range of online platforms and also accepts local video files.
+> **Summarizr** is [zsh](https://www.zsh.org/) script (currently written for MacOS) that uses [Whisper.cpp](https://github.com/ggerganov/whisper.cpp), [yt-dlp](https://github.com/yt-dlp/yt-dlp), [FFmpeg](http://FFmpeg.org) and [Ollama](https://ollama.ai) to summarize or manipulate videos. Thanks to [yt-dlp](https://github.com/yt-dlp/yt-dlp), it works across a wide range of online platforms. **Summarizr** also accepts local video files!
 
 ---
 
@@ -30,13 +30,14 @@ chmod +x Summarizr.sh
 ## 🚀 Usage
 
 ### Online Videos
-```
-./Summarizr.sh [URL] --prompt [PROMPT] --model [MODEL]
+* Please note that arguments in **bold** are **mandatory**
+```bash
+./Summarizr.sh **[URL]** --prompt [PROMPT] --ollama [OLLAMA_MODEL] --whisper [WHISPER_MODEL]
 ```
 
 ### Local Videos
-```
-./Summarizr.sh [LOCAL_FILE] --prompt [PROMPT] --model [MODEL]
+```bash
+./Summarizr.sh **[LOCAL_FILE]** --prompt [PROMPT] --ollama [OLLAMA_MODEL] --whisper [WHISPER_MODEL]
 ```
 
 ---
