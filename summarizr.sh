@@ -5,6 +5,17 @@ model="llama2"
 script_dir="$(dirname "$0")"
 cd "$script_dir"
 
+echo "$(ollama list) are the models you have installed. Use --model [model]"
+
+echo "$(ls prompts -laG) are the prompts you have installed. Use --prompt [prompt] (do not include the `.txt`)"
+
+if [ -z "$1" ]; then
+  echo "No URL or file path passed. Exiting."
+  exit
+else
+  echo "Argument passed to \$1: $1"
+fi
+
 # Parse remaining command-line options
 url_or_file="$1"
 shift
@@ -103,9 +114,3 @@ ollama run "$model" """ "$prompt" """ "$(cat "$txt_output")" | tee "$folder/AI-s
 
 # Cleanup
 rm -rf "$script_dir"/temp*
-#rm -rf *.mp4
-#rm -rf *.webm
-#rm -rf *.mov
-#rm -rf *.wav
-# rm -rf *.txt
-
