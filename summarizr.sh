@@ -22,7 +22,7 @@ txt_output="$folder/$wav.txt"
 
 echo -e "\n${BF}${BL}*** OLLAMA MODELS ***${RS}"  
 echo -e "$(ollama list)"
-echo -e "==> Above are the models that you have installed. Use --model [model]\n"
+echo -e "==> Above are the models that you have installed. Use --ollama [model]\n"
 
 echo -e "\n${BF}${BL}*** PROMPTS ***${RS}"
 echo -e "$(ls -laG $script_dir/prompts)"
@@ -46,27 +46,34 @@ while [[ "$#" -gt 0 ]]; do
             fi
             shift 2  # Remove --prompt and its value
             ;;
-        --model)
-            ollama_models=$(ollama list | awk '{print $1}')
-            if [[ $ollama_models == *"$2"* ]]; then
-                model="$2"
+        --ollama)
+            installed_ollama_models=$(ollama list | awk '{print $1}')
+            if [[ $installed_ollama_models == *"$2"* ]]; then
+                ollama_model="$2"
             else
                 echo "Invalid model. Exiting."
                 exit 1
             fi
-            shift 2  # Remove --model and its value
+            shift 2  # Remove --ollama and its value
             ;;
         --whisper)
-            whisper_models=$(ls -l "$whisper_dir/models" | awk '{print $1}')
-            if [[ $whisper_models == *"$2"* ]]; then
-                model="$2"
-            else
-                echo "Invalid model. Exiting."
-                exit 1
-            fi
-            shift 2  # Remove --model and its value
-            ;;
-        *)
+            installed_whisper_models=$(ls "$whisper_dir/models")
+            found_model=false
+            for model in $installed_whisper_models; do
+              if [[ $model == "$2.bin" ]]; then
+                found_model=true
+              break
+              fi
+            done
+        if $found_model; then
+          whisper_model="$2.bin"
+        else
+          echo "Invalid model. Exiting."
+          exit 1
+        fi
+        shift 2  # Remove --whisper and its value
+        ;;
+      *)
             # Unrecognized option
             echo "Unrecognized option: $1. Exiting."
             exit 1
@@ -76,9 +83,10 @@ done
 
 # DEBUGGING
 echo -e "\n${BF}${BL}SELECTED PROMPT:${RS} $prompt"
-echo -e "${BF}${BL}${BL}OLLAMA MODEL:${RS} $model"
+echo -e "${BF}${BL}${BL}OLLAMA MODEL:${RS} $ollama_model"
 echo -e "${BF}${BL}FILE/URL:${RS} $url_or_file"
 echo -e "${BF}${BL}WHISPER.CPP INSTALL:${RS} $whisper_dir"
+echo -e "${BF}${BL}WHISPER.CPP MODEL:${RS} $whisper_model"
 echo -e "${BF}${BL}WHISPER COMMAND BEING RUN:${RS} $whisper_command"
 
 # Create output folder
@@ -132,7 +140,7 @@ $whisper_command "$wav"
 # We need to redefine txt_output, as the values for folder and wav have changed 
 txt_output="$wav.txt"
 echo -e "\n${BF}${GR}Running Ollama 🦙${RS}"
-ollama run "$model" """ "$prompt" """ "$(cat "$txt_output")" | tee "$folder/AI-summary.md"
+ollama run "$ollama_model" """ "$prompt" """ "$(cat "$txt_output")" | tee "$folder/AI-summary.md"
 
 # Cleanup
 rm -rf "$script_dir"/temp*

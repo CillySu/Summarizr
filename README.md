@@ -30,13 +30,14 @@ chmod +x Summarizr.sh
 ## 🚀 Usage
 
 ### Online Videos
-```
-./Summarizr.sh [URL] --prompt [PROMPT] --model [MODEL]
+* Please note that arguments in **bold** are **mandatory**
+```bash
+./Summarizr.sh **[URL]** --prompt [PROMPT] --ollama [OLLAMA_MODEL] --whisper [WHISPER_MODEL]
 ```
 
 ### Local Videos
-```
-./Summarizr.sh [LOCAL_FILE] --prompt [PROMPT] --model [MODEL]
+```bash
+./Summarizr.sh **[LOCAL_FILE]** --prompt [PROMPT] --ollama [OLLAMA_MODEL] --whisper [WHISPER_MODEL]
 ```
 
 ---
