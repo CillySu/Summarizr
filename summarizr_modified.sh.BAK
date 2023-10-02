@@ -1,0 +1,110 @@
+#!/bin/bash
+# Initialize variables
+prompt="Summarise the following file"
+model="llama2"
+
+echo "ARG1: $1"
+echo "ARG2: $2"
+echo "ARG3: $3"
+echo "ARG4: $4"
+echo "ARG5: $5"
+
+# Parse remaining command-line options
+url_or_file="$1"
+echo "shifting"
+shift
+echo "ARG1: $1"
+echo "ARG2: $2"
+echo "ARG3: $3"
+echo "ARG4: $4"
+echo "ARG5: $5"
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --prompt)
+            prompt_file="./prompts/$2.txt"
+            if [[ -f "$prompt_file" ]]; then
+                prompt=$(<"$prompt_file")
+            else
+                echo "Invalid prompt file. Exiting."
+                exit 1
+            fi
+            shift 2  # Remove --prompt and its value
+            echo "shifting 2"
+            echo "ARG1: $1"
+            echo "ARG2: $2"
+            echo "ARG3: $3"
+            echo "ARG4: $4"
+            echo "ARG5: $5"
+            ;;
+        --model)
+            available_models=$(ollama list | awk '{print $1}')
+            if [[ $available_models == *"$2"* ]]; then
+                model="$2"
+            else
+                echo "Invalid model. Exiting."
+                exit 1
+            fi
+            shift 2  # Remove --model and its value
+            ;;
+        *)
+            # Unrecognized option
+            echo "Unrecognized option: $1. Exiting."
+            exit 1
+            ;;
+    esac
+done
+
+# Initialize variables
+source ~/.zshrc
+output_file="output.wav"
+whisper_command="/Users/cillian/whisper.cpp/main -l en -m /Users/cillian/whisper.cpp/models/ggml-large.bin -otxt -f"
+wav="temp.wav"
+folder="$HOME/Documents/output_$(date +%Y%m%d_%H%M%S)"
+txt_output="$folder/$wav.txt"
+echo "PROMPT: $prompt"
+echo "MODEL: $model"
+echo "FILE/URL: $url_or_file"
+
+# Create output folder
+mkdir "$folder"
+
+# Step 1: Download video if URL is provided
+if [[ $url_or_file == http* ]]; then
+  echo "URL detected. Sending to yt-dlp"
+  yt-dlp "$url_or_file" -f 'best' -o "$folder/temp.mp4"
+  echo "Converting $folder/temp.mp4 with FFMPEG"
+  ffmpeg -i "$folder/temp.mp4" -ar 16000 "$folder/temp.wav"
+else
+  # Symlinks the file provided to the PWD
+  cp "$url_or_file" "$folder/temp.mp4"
+  ffmpeg -i "$folder/temp.mp4" -ar 16000 "$folder/temp.wav"
+
+#echo "DEBUG: \n\n Folder: $folder\nPrompt: $prompt\nModel: $model"
+
+fi
+
+# Step 2: Convert to wav 16kHz
+# Loop through each file in the current directory
+#for file in "$folder/"; do
+#  # Check if the file has one of the specified extensions
+#  if [[ "$file" =~ \.(mp4|mov|webm|mp3|wav|ogg)$ ]]; then
+#    # Perform the ffmpeg command
+#    echo "PERFORMING FFMPEG"
+#    ffmpeg -i "$file" -ar 16000 "$folder/temp.wav"
+#  fi
+#done
+
+# Step 3: Run whisper command
+$whisper_command "$folder/temp.wav"
+
+# Step 4: Run ollama command
+ollama run "$model" """ "$prompt" """ "$(cat "$txt_output")" | tee "$folder/AI-summary.md"
+
+# Cleanup
+rm -rf temp*
+rm -rf *.mp4
+rm -rf *.webm
+rm -rf *.mov
+rm -rf *.wav
+# rm -rf *.txt
+

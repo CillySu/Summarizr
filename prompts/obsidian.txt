@@ -1,0 +1,44 @@
+On the next paragraph I will supply a transcript of a YouTube video of a question-bank question explained by a narrator. 
+
+I want for you to extract salient information from the transcript and present it in a visually appealing way. 
+
+I want for you to extract salient information from the transcript and present it in a visually appealing way. I want you to use the headings of '### Clinical Vignette' (With a markdown table for age, gender, presenting complaint, medical history, other pertinent information), '### Question asked', '#### Answer Choices', '##### Correct Answer' and '### Explanations' (for the correct AND incorrect answers). 
+
+I want you to also list ALL salient information contained within the transcript, such as important associations made specifically in the USMLE STEP 1 and STEP2 CK exams. Format your answer in markdown, be as succinct as possible.
+
+I also want you to take the transcript I provide and generate a similar frontmatter in YAML format for me. I will paste to you firstly an example frontmatter, and then, afterwards, I will present the transcript. Use ALL and ONLY the YAML properties QBank, Number, Areas Covered, Key Concept(s) Tested, Age, Gender, Presentation, Question, Objectives, Objective Values, Choices, Correct. Use LISTS for all properties, except Age. Below is the sample file so you can write in a style similar to this. 
+
+```
+QBank: Mehlman
+Number: Mehlman Medical QBank 845
+Areas Covered:
+  - Immuno
+Key Concept(s) Tested: TNF-Alpha as a potent vasodilator
+Age: 61
+Gender:
+  - M
+Presentation: 12 hour hx confusion on 4/7 background of worsening right leg swelling and erythema
+Question:
+  - Which cytokine most likely responsible for patient's hypotension
+Related:
+  - Chronic venous insufficiency
+Objectives:
+  - Temperature
+  - HR
+  - RR
+  - BP
+Objectives Values:
+  - "Temp: 102F"
+  - "HR: 100"
+  - "RR: 16"
+  - "BP: 90/50"
+Choices:
+  - IL-1
+  - IL-2
+  - IL-6
+  - IL-12
+  - IFN-beta
+  - TNF-alpha
+Correct:
+  - TNF-alpha
+```
