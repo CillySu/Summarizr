@@ -5,16 +5,9 @@ model="llama2"
 script_dir="$(dirname "$0")"
 cd "$script_dir"
 
-echo "$(ollama list) are the models you have installed. Use --model [model]"
+echo -e "\n\n*** OLLAMA MODELS ***\n$(ollama list)\n ==> Above are the models that you have installed. Use --model [model]"
 
-echo "$(ls prompts -laG) are the prompts you have installed. Use --prompt [prompt] (do not include the `.txt`)"
-
-if [ -z "$1" ]; then
-  echo "No URL or file path passed. Exiting."
-  exit
-else
-  echo "Argument passed to \$1: $1"
-fi
+echo -e "\n\n*** PROMPTS ***\n$(ls $script_dir/prompts)\n ==> Above are the prompts that you have installed. Use --prompt [prompt] (do not include the .txt)"
 
 # Parse remaining command-line options
 url_or_file="$1"
@@ -50,16 +43,17 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Initialize variables
-source ~/.zshrc
-output_file="output.wav"
-whisper_command="/Users/cillian/whisper.cpp/main -l en -m /Users/cillian/whisper.cpp/models/ggml-large.bin -otxt -f"
+. $script_dir/healthcheck.sh
+whisper_model="ggml-large.bin"
+whisper_command="$whisper_dir/main -l en -m /Users/cillian/whisper.cpp/models/$whisper_model -otxt -f"
 folder="$HOME/Documents/summarizr/output_$(date +%Y%m%d_%H%M%S)"
 parent_folder=$(dirname "$folder")
 wav="$folder/temp.wav"
 txt_output="$folder/$wav.txt"
-echo "PROMPT: $prompt"
-echo "MODEL: $model"
+echo "SELECTED PROMPT: $prompt"
+echo "OLLAMA MODEL: $model"
 echo "FILE/URL: $url_or_file"
+echo "WHISPER.CPP INSTALL: $whisper_dir"
 
 # Create output folder
 mkdir -p "$folder"

@@ -28,7 +28,7 @@ if [ ${#ADDR[@]} -gt 1 ]; then
   done
 else
   echo "Folder 'whisper.cpp' found at: ${ADDR[0]}"
-  whisper_dir="${ADDR[0]}"
+  export whisper_dir="${ADDR[0]}"
 fi
 
 # Initialize array for missing packages
