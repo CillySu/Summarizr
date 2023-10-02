@@ -1,7 +1,7 @@
 # 🎥 Summarizr
 
 <div align="center">
-  <img src="https://i.imgur.com/lQZlmVY.png" alt="Summarizr Logo" width="200"/>
+  <img src="https://i.imgur.com/lQZlmVY.png" alt="Summarizr Logo" width="350"/>
 </div>
 
 > A bash script (currently written for MacOS) that uses `Whisper.cpp` and `Ollama` to summarize or manipulate videos. Built on `yt-dlp`, it works across a wide range of online platforms and also accepts local video files.
