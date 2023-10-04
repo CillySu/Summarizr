@@ -30,7 +30,7 @@ chmod +x Summarizr.sh
 ## 🚀 Usage
 
 ### Online Videos
-* Please note that arguments in **bold** are **mandatory**
+* Please note that arguments wrapped in `**[ARGUMENT]**` are **mandatory**
 ```bash
 ./Summarizr.sh **[URL]** --prompt [PROMPT] --ollama [OLLAMA_MODEL] --whisper [WHISPER_MODEL]
 ```
