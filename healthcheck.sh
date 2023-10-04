@@ -141,38 +141,3 @@ else
     exit 1
   fi
 fi
-
-## Initialize array for missing libraries
-#echo -e "Checking if user has python libraries ane_transformers, openai-whisper, coremltools installed.\n\n"
-#declare -a pip_missing_libraries
-
-## Check for ane_transformers
-#if ! $pip_cmd show ane_transformers > /dev/null 2>&1; then
-  #pip_missing_libraries+=("ane_transformers")
-#fi
-
-## Check for openai-whisper
-#if ! $pip_cmd show openai-whisper > /dev/null 2>&1; then
-  #pip_missing_libraries+=("openai-whisper")
-#fi
-
-## Check for coremltools
-#if ! $pip_cmd show coremltools > /dev/null 2>&1; then
-  #pip_missing_libraries+=("coremltools")
-#fi
-
-## If missing libraries, prompt for install
-#if [ ${#pip_missing_libraries[@]} -ne 0 ]; then
-  #echo "Missing libraries: ${pip_missing_libraries[@]}"
-  #read -p "Do you want to install missing libraries? (y/n): " choice
-
-  #if [ "$choice" == "y" ]; then
-    #for library in "${pip_missing_libraries[@]}"; do
-      #$pip_cmd install "$library"
-    #done
-  #else
-    #echo "Installation aborted."
-  #fi
-#else
-  #echo "All libraries are installed."
-#fi
